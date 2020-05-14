@@ -1,4 +1,4 @@
-package bac;
+package ledger;
 
 import java.math.BigInteger;
 import org.fisco.bcos.channel.client.Service;
@@ -10,13 +10,13 @@ import org.fisco.bcos.web3j.tx.gas.StaticGasProvider;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-public class Bac {
+public class Command {
     private Credentials credentials;
     private Web3j web3j;
     final BigInteger gasPrice = new BigInteger("1");
     final BigInteger gasLimit = new BigInteger("2100000000");
 
-    public Bac() {
+    public Command() {
         try {
             ApplicationContext context =
                     new ClassPathXmlApplicationContext("classpath:application.xml");
@@ -38,8 +38,8 @@ public class Bac {
     public void initAssetContract(String amount) {
         ContractGasProvider contractGasProvider = new StaticGasProvider(gasPrice, gasLimit);
         try {
-            BAC001 bac001 =
-                    BAC001.deploy(
+            LedgerSample ledgerSample =
+                    LedgerSample.deploy(
                                     web3j,
                                     credentials,
                                     contractGasProvider,
@@ -48,7 +48,7 @@ public class Bac {
                                     BigInteger.valueOf(1),
                                     new BigInteger(amount))
                             .send();
-            String assetAddress = bac001.getContractAddress();
+            String assetAddress = ledgerSample.getContractAddress();
             System.out.println("assetAddress: " + assetAddress);
             System.out.println("owner: " + credentials.getAddress());
         } catch (Exception e) {
@@ -61,8 +61,8 @@ public class Bac {
     public void balanceOf(String assetAddress, String address) {
         try {
             ContractGasProvider contractGasProvider = new StaticGasProvider(gasPrice, gasLimit);
-            BAC001 bac001 = BAC001.load(assetAddress, web3j, credentials, contractGasProvider);
-            System.out.println("balance: " + bac001.balance(address).send());
+            LedgerSample ledgerSample = LedgerSample.load(assetAddress, web3j, credentials, contractGasProvider);
+            System.out.println("balance: " + ledgerSample.balance(address).send());
         } catch (Exception e) {
             e.printStackTrace();
             System.exit(1);
@@ -73,11 +73,11 @@ public class Bac {
     public void approve(String assetAddress, String address, String amount) {
         try {
             ContractGasProvider contractGasProvider = new StaticGasProvider(gasPrice, gasLimit);
-            BAC001 bac001 = BAC001.load(assetAddress, web3j, credentials, contractGasProvider);
-            bac001.approve(address, new BigInteger(amount)).send();
+            LedgerSample ledgerSample = LedgerSample.load(assetAddress, web3j, credentials, contractGasProvider);
+            ledgerSample.approve(address, new BigInteger(amount)).send();
             System.out.println("approve successfully");
             System.out.println(
-                    "amount: " + bac001.allowance(credentials.getAddress(), address).send());
+                    "amount: " + ledgerSample.allowance(credentials.getAddress(), address).send());
         } catch (Exception e) {
             e.printStackTrace();
             System.exit(1);
@@ -88,11 +88,11 @@ public class Bac {
     public void transfer(String assetAddress, String address, String amount) {
         try {
             ContractGasProvider contractGasProvider = new StaticGasProvider(gasPrice, gasLimit);
-            BAC001 bac001 = BAC001.load(assetAddress, web3j, credentials, contractGasProvider);
-            bac001.send(address, new BigInteger(amount), new byte[0]).send();
+            LedgerSample ledgerSample = LedgerSample.load(assetAddress, web3j, credentials, contractGasProvider);
+            ledgerSample.send(address, new BigInteger(amount), new byte[0]).send();
             System.out.println("transfer successfully");
-            System.out.println("sender: " + bac001.balance(credentials.getAddress()).send());
-            System.out.println("receiver: " + bac001.balance(address).send());
+            System.out.println("sender: " + ledgerSample.balance(credentials.getAddress()).send());
+            System.out.println("receiver: " + ledgerSample.balance(address).send());
         } catch (Exception e) {
             e.printStackTrace();
             System.exit(1);

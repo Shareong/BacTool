@@ -1,1 +1,2 @@
-tool for bac001
+# ledger-tool
+tool for bcos ledger sample

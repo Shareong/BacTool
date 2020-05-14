@@ -12,7 +12,7 @@
     </bean>
 
     <bean id="account"
-        class="bac.AccountConfig">
+        class="ledger.AccountConfig">
         <property name="pemFile" value="0x55f934bcbe1e9aef8337f5551142a442fdde781c.pem"/>
         <property name="p12File" value=""/>
         <property name="password" value=""/>
