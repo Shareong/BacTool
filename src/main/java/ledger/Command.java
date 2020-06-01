@@ -61,7 +61,8 @@ public class Command {
     public void balanceOf(String assetAddress, String address) {
         try {
             ContractGasProvider contractGasProvider = new StaticGasProvider(gasPrice, gasLimit);
-            LedgerSample ledgerSample = LedgerSample.load(assetAddress, web3j, credentials, contractGasProvider);
+            LedgerSample ledgerSample =
+                    LedgerSample.load(assetAddress, web3j, credentials, contractGasProvider);
             System.out.println("balance: " + ledgerSample.balance(address).send());
         } catch (Exception e) {
             e.printStackTrace();
@@ -73,7 +74,8 @@ public class Command {
     public void approve(String assetAddress, String address, String amount) {
         try {
             ContractGasProvider contractGasProvider = new StaticGasProvider(gasPrice, gasLimit);
-            LedgerSample ledgerSample = LedgerSample.load(assetAddress, web3j, credentials, contractGasProvider);
+            LedgerSample ledgerSample =
+                    LedgerSample.load(assetAddress, web3j, credentials, contractGasProvider);
             ledgerSample.approve(address, new BigInteger(amount)).send();
             System.out.println("approve successfully");
             System.out.println(
@@ -88,7 +90,8 @@ public class Command {
     public void transfer(String assetAddress, String address, String amount) {
         try {
             ContractGasProvider contractGasProvider = new StaticGasProvider(gasPrice, gasLimit);
-            LedgerSample ledgerSample = LedgerSample.load(assetAddress, web3j, credentials, contractGasProvider);
+            LedgerSample ledgerSample =
+                    LedgerSample.load(assetAddress, web3j, credentials, contractGasProvider);
             ledgerSample.send(address, new BigInteger(amount), new byte[0]).send();
             System.out.println("transfer successfully");
             System.out.println("sender: " + ledgerSample.balance(credentials.getAddress()).send());
